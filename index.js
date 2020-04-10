@@ -69,8 +69,8 @@ const android_splash_info = {
 
 
 //Default icon
-const icon = gm('../../resources/icon.png');
-const splash = gm('../../resources/splash.png');
+const icon = gm(process.cwd() + '/resources/icon.png');
+const splash = gm(process.cwd() + '/resources/splash.png');
 
 var splash_width; //splash screen source width
 splash.size(function (err, size) {
@@ -199,7 +199,7 @@ var distributeFrom = function (keys, src, dest, copy_mipmap, callback) {
 
 var distributeAndroidAssets = function (callback) {
 	console.log('Distributing android assets...');
-	var dest_path = '../../platforms/android/res';
+	var dest_path = process.cwd() + '/platforms/android/res';
 	distributeFrom(Object.keys(android_icon_info), './resources/android/icon', dest_path, true, function (err) {
 		if (!err) {
 			distributeFrom(Object.keys(android_splash_info), './resources/android/splash', dest_path, false, callback);
@@ -215,11 +215,11 @@ var distributeIOSAssetsForProject = function (project, done) {
       {
           assets: Object.keys(ios_splash_info),
           src : './resources/ios/splash',
-          dest: '../../platforms/ios/' + project + '/Images.xcassets/LaunchImage.launchimage'
+          dest: process.cwd() + '/platforms/ios/' + project + '/Images.xcassets/LaunchImage.launchimage'
       }, {
         assets: Object.keys(ios_icon_info),
         src : './resources/ios/icon',
-        dest: '../../platforms/ios/' + project + '/Images.xcassets/AppIcon.appiconset'
+        dest: process.cwd() + '/platforms/ios/' + project + '/Images.xcassets/AppIcon.appiconset'
       }
     ];
     async.each(collection, function (info, next) {
@@ -266,7 +266,7 @@ var distributeIOSAssets = function (callback) {
     }
   });
 
-  stream = fs.createReadStream('../../config.xml')
+  stream = fs.createReadStream(process.cwd() + '/config.xml')
   .pipe(parser);
 
   stream.on('close', function () {
@@ -281,10 +281,10 @@ var distributeIOSAssets = function (callback) {
 
 async.series([
 	function(callback) {
-		if (!fs.existsSync('../../resources/icon.png')) {
+		if (!fs.existsSync(process.cwd() + '/resources/icon.png')) {
 		    console.log("ERROR: Missing 'icon.png' file in resources folder.");
 		}
-		else if (!fs.existsSync('../../resources/splash.png')) {
+		else if (!fs.existsSync(process.cwd() + '/resources/splash.png')) {
 		    console.log("ERROR: Missing 'splash.png' file in resources folder.");
 		}
 		else {
